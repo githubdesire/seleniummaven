@@ -1,45 +1,65 @@
 package com.selenium.project;
 
+
+import org.testng.Assert;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.PageFactory;
 
-public class LoginPage {
+import com.selenium.project.DriverInitializer;
+import com.selenium.project.IndexPage;
+import com.selenium.project.LoginPage;
 
-    public static By loginLocator = By.id("loginId");
-    public static By passwordLocator = By.id("password");
-    public static By submitButtonLocator = By.id("submit-btn");
+import static org.assertj.core.api.Assertions.*;
 
-    public LoginPage(WebDriver driver) {
-        PageFactory.initElements(driver, this);
+public class LoginTest {
+
+    static WebDriver webDriver;
+
+    @BeforeSuite
+    public static void setUp() throws Exception {
+        webDriver = DriverInitializer.getDriver();
     }
 
-    public static void logInWithUsernameAndPassword
-            (String loginId, String password, WebDriver driver) {
-
-        driver.findElement(loginLocator).sendKeys(loginId);
-        driver.findElement(passwordLocator).sendKeys(password);
-        driver.findElement(submitButtonLocator).click();
+    @AfterSuite
+    public static void tearDown() {
+        webDriver.quit();
     }
 
-    @FindBy(how = How.ID, using = "loginId")
-    private WebElement loginId;
-
-    @FindBy(how = How.ID, using = "password")
-    private WebElement password;
-
-    @FindBy(how = How.ID, using = "submit-btn")
-    private WebElement submit;
-
-    public void logIn(String loginId, String password) {
-        this.loginId.sendKeys(loginId);
-        this.password.sendKeys(password);
-        this.submit.click();
+    @BeforeMethod
+    public void navigate() {
+        webDriver.get(DriverInitializer.getProperty("login.url"));
     }
 
-    
+    @Test
+    public void login() {
+        WebElement webElement = webDriver.findElement(By.id("loginId"));
+        webElement.sendKeys("hi");
+        webElement = webDriver.findElement(By.id("password"));
+        webElement.sendKeys("hi");
+        webElement = webDriver.findElement(By.id("submit-btn"));
+        webElement.click();
+        webElement = webDriver.findElement(By.id("loginId"));
+        assertThat(webElement.getText()).isEqualTo("hi");
+
+    }
+
+    @Test
+    public void loginPage1() {
+        LoginPage.logInWithUsernameAndPassword("login", "password", webDriver);
+        assertThat(webDriver.findElement(IndexPage.loginLocator).getText()).isEqualTo("login");
+    }
+
+    @Test
+    public void loginPage2() {
+        new LoginPage(webDriver).logIn("login", "password");
+        assertThat(webDriver.findElement(IndexPage.loginLocator).getText()).isEqualTo("login");
+    }
 
 }
