@@ -1,10 +1,13 @@
 package com.selenium.project;
 
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.testng.Assert;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -19,17 +22,17 @@ public class LoginTest {
 
     static WebDriver webDriver;
 
-    @BeforeClass
+    @BeforeSuite
     public static void setUp() throws Exception {
         webDriver = DriverInitializer.getDriver();
     }
 
-    @AfterClass
+    @AfterSuite
     public static void tearDown() {
         webDriver.quit();
     }
 
-    @Before
+    @BeforeMethod
     public void navigate() {
         webDriver.get(DriverInitializer.getProperty("login.url"));
     }
