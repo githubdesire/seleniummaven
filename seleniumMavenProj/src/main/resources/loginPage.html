@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Page Object Model</title>
+    <style type="text/css">
+        #login{
+            margin:30vh 40vw;
+        }
+        input{
+            display: block;
+            margin-top: 1vh;
+            margin-bottom: 1vh;
+        }
+    </style>
+</head>
+<body>
+
+    <div id ="login">
+        UserName:<input id="loginId" type ="text"/>
+        Password:<input id="password" type="password"/>
+        <input id="submit-btn" type="submit" value="Login"/>
+    </div>
+    <script type="text/javascript">
+        function login(){
+            sessionStorage.loginId = document.getElementById("loginId").value;
+            window.location ="indexPage.html";
+        }
+        document.getElementById("submit-btn").addEventListener("click", login);
+    </script>
+</body>
+</html>
