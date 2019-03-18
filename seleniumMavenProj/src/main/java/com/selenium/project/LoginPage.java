@@ -15,7 +15,6 @@ public class LoginPage {
 
     public LoginPage(WebDriver driver) {
         PageFactory.initElements(driver, this);
-System
     }
 
     public static void logInWithUsernameAndPassword
